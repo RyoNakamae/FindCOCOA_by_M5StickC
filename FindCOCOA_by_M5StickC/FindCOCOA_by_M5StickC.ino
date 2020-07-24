@@ -61,8 +61,13 @@ void loop(){
 
     M5.Lcd.fillScreen(BLACK);
     M5.Lcd.setTextColor(WHITE);
-    M5.Lcd.setCursor(30, 20);
+    M5.Lcd.setCursor(10, 5);
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.print("-- COCOA FINDER --");
+
     
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(30, 30);
     M5.Lcd.print("Found : ");
     M5.Lcd.println(deviceNum);
     Serial.print(" - FoundDevice : ");
