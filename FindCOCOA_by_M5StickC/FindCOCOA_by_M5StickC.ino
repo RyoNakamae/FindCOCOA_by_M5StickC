@@ -4,6 +4,9 @@
 int scanTime = 5; //In seconds
 BLEScan* pBLEScan;
 
+//static int giBattery = 0;
+double vbat = 0.0;
+
 // Contact Tracing Bluetooth Specification (Apple/Google)
 // https://blog.google/documents/58/Contact_Tracing_-_Bluetooth_Specification_v1.1_RYGZbKW.pdf
 const char* uuid = "0000fd6f-0000-1000-8000-00805f9b34fb";
@@ -22,7 +25,7 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
                 Serial.print("RSSI: ");
                 Serial.print(rssi);
                 deviceNum++;
-                if(rssi > -69){
+                if(rssi > -75){
                     found = true;
                     Serial.print(" >> Near! << ");
                     nearDeviceNum++;
@@ -67,7 +70,7 @@ void loop(){
 
     
     M5.Lcd.setTextSize(2);
-    M5.Lcd.setCursor(30, 30);
+    M5.Lcd.setCursor(30, 25);
     M5.Lcd.print("Found : ");
     M5.Lcd.println(deviceNum);
     Serial.print(" - FoundDevice : ");
@@ -76,15 +79,24 @@ void loop(){
     if(nearDeviceNum > 0){
       M5.Lcd.setTextColor(YELLOW);
     }
-    M5.Lcd.setCursor(30, 50);
+    M5.Lcd.setCursor(30, 45);
     M5.Lcd.print("Near : ");
     M5.Lcd.println(nearDeviceNum);
     Serial.print(" - NearDevice : ");
     Serial.println(nearDeviceNum);
 
-
     pBLEScan->clearResults(); // delete results fromBLEScan buffer to release memory
     Serial.println("Loop End.");
-    delay(1000);
+
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.setCursor(10, 70);
+    M5.Lcd.setTextColor(WHITE);
+    vbat = M5.Axp.GetBatVoltage();
+    M5.Lcd.printf("Volt: %.2fV  ", vbat);
+    for( int i = 0 ; i < 5 ; i++ ){
+      M5.Lcd.print(".");
+      delay(500);
+      Serial.println(i);
+    }
 
 }
